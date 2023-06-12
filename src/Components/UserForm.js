@@ -64,7 +64,7 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './UserForm.css';
 
 const UserForm = (props) => {
@@ -72,6 +72,8 @@ const UserForm = (props) => {
   const [enteredAge, setEnteredAge] = useState('');
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
+  const [collegeError, setCollegeError] = useState('');
+  const collegeRef = useRef();
 
   const userNameHandler = (event) => {
     setEnteredName(event.target.value);
@@ -85,6 +87,7 @@ const UserForm = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    const collegeName = collegeRef.current.value;
 
     let valid = true;
 
@@ -92,6 +95,10 @@ const UserForm = (props) => {
       setNameError('Please enter a name');
       valid = false;
     }
+    if (collegeName.trim() === '') {
+        setCollegeError('Please enter your college name');
+        valid = false;
+      }
 
     const age = +enteredAge;
 
@@ -135,6 +142,14 @@ const UserForm = (props) => {
             onChange={ageHandler}
           ></input>
           {ageError && <p className='error'>{ageError}</p>}
+        </div>
+        <div className='my-form__usercollege'>
+          <label>College Name</label>
+          <input
+            type='text'
+            ref = {collegeRef}
+          ></input>
+          {collegeError && <p className='error'>{collegeError}</p>}
         </div>
         <div className='my-form__action'>
           <button type='submit'>Add User</button>
